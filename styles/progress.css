@@ -1,0 +1,48 @@
+.progress{
+    display: grid;
+    display: -ms-grid;
+    display: -moz-grid;
+}
+
+.progress{
+    grid-template-columns: repeat(5, max-content);
+    align-content: center;
+    width: max-content;
+    margin: auto;
+}
+.progress .circle{
+    border:1px solid black;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+}
+
+.progress .circle:first-of-type{
+    background-color: green;
+}
+
+.progress .dash{
+    width: 60px;
+    height: 1px;
+    background-color: black;
+    align-self: center;
+}
+
+.progress-title{
+    text-align: center;
+    margin: 1rem auto;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.progress-underline{
+    width: 100px;
+    height: 2px;
+    margin: auto;
+    background-color: gold;
+}
+
+.content{
+    margin-top: 1.5rem;
+}

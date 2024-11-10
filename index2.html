@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            #map {
+                height: 400px;
+                width: 80vw;
+                max-width:800px;
+                margin: auto;
+            }
+        </style>
+
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+        <link rel="stylesheet" href="../styles/select-location.css" />
+        <link rel="stylesheet" href="../styles/select-vehicle.css" />
+        <link rel="stylesheet" href="./styles/navigation.css" />
+        <link rel="stylesheet" href="./styles/progress.css" />
+        <link rel="stylesheet" href="./styles/package-form.css" />
+        <link rel="stylesheet" href="./styles/select-vehicle.css" />
+        <link rel="stylesheet" href="./styles/popup.css" />
+        <link rel="stylesheet" href="./styles/results.css" />
+        <link rel="stylesheet" href="../scripts/swiper/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+        <title>Logistics Cost Estimation</title>
+    </head>
+    <body>
+        
+        <script src="./scripts/logistics.js"></script>
+
+        <section>
+            <div class="progress">
+                <div class="circle"></div>
+                <div class="dash"></div>
+                <div class="circle"></div>
+                <div class="dash"></div>
+                <div class="circle"></div>
+            </div>
+            <div class="progress-title"><span id="step">Step 1:</span> <span id="step-title">Uploading Packages</span></div>
+            <div class="progress-underline"></div>
+        </section>
+        <div class="swiper content">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide">
+                    <div class="select-vehicle">
+                        <div class="select-vehicle-buttons">
+                            <button id="upload-package-button" onclick="uploadingPackages(event)" class="active">Upload Packages</button>
+                            <button id="select-vehicle-button" onclick="selectingVehicles(event)" >Select Vehicle</button>
+                        </div>
+                        <div class="swiper2">
+                            <!-- Additional required wrapper -->
+                            <div class="swiper-wrapper">
+                                <!-- Slides -->
+                                <div class="swiper-slide">
+                                    <div>
+                                        <button class="add-package-button" onclick="editPackage(true)">Add Package</button>
+                                        <div class="packages">
+                                            <table id="packages-table">
+                                                <thead></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Description</th>
+                                                        <th>Length</th>
+                                                        <th>Width</th>
+                                                        <th>Height</th>
+                                                        <th>Weight</th>
+                                                        <th>Units</th>
+                                                    </tr>
+                                                    <!-- <tr>
+                                                        <th>1</th>
+                                                        <td>Package 1</td>
+                                                        <td>2</td>
+                                                        <td>4</td>
+                                                        <td>2</td>
+                                                        <td>6</td>
+                                                        <td>2</td>
+                                                        <td><button class="edit-button">Edit</button></td>
+                                                        <td><button class="delete-button">Delete</button></td>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="swiper-slide">
+                                        <div class="vehicles">
+                                            <div >
+                                                <!-- The vehicle images goes here -->
+                                                <div class="swiper3">
+                                                    <div class="swiper-wrapper" id="vehiclesContainer">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <!-- The vehicle details goes here -->
+                                                <div class="vehicle-details">
+                                                    <span>Number plate</span>
+                                                    <span id="number-plate">KDB 245B</span>
+                                                    <span>Description</span>
+                                                    <span id="description">Volvo</span>
+                                                    <span>Storage length</span>
+                                                    <span id="length">2 m</span>
+                                                    <span>Storage width</span>
+                                                    <span id="width">2 m</span>
+                                                    <span>Storage height</span>
+                                                    <span id="height">2 m</span>
+                                                    <span>Maximum weight</span>
+                                                    <span id="weight">3 kg</span>
+                                                    <span>Rate per km</span>
+                                                    <span id="rate-per-km">Ksh. 200</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- If we need pagination -->
+                            <!-- <div class="swiper-pagination"></div> -->
+                          
+                            <!-- If we need navigation buttons -->
+                            <!-- <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div> -->
+                          
+                            <!-- If we need scrollbar -->
+                            <!-- <div class="swiper-scrollbar"></div> -->
+                        </div>
+                    </div>
+                    <div class="navigation-buttons">
+                        <button style="visibility: hidden;">PREV</button>
+                        <button class="prev-button" onclick="slideTo(1)">NEXT</button>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div>
+                        <div>
+                            <div class = "select-locations">
+                                <p><b>Select:</b></p>
+                                <div>
+                                    <div class="location-options">
+                                        <section class = "option">
+                                            <button onclick="selectPickupLocation()">Pickup Location</button>
+                                            <div id="selecting-pickup-location" onclick="cancelPickupLocation(event)">
+                                                <p>DONE</p>
+                                                <!-- <div class = "circle"></div>
+                                                <div class = "circle"></div>
+                                                <div class = "circle"></div> -->
+                                            </div>
+                                        </section>
+                                        <section class = "option">
+                                            <button onclick="selectDropLocation()">Drop Location</button>
+                                            <div id="selecting-drop-location" onclick="cancelDropLocation(event)">
+                                                <p>DONE</p>
+                                                <!-- <div class = "circle"></div>
+                                                <div class = "circle"></div>
+                                                <div class = "circle"></div> -->
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div style="position: relative; width: 80vw; max-width: 400px;margin: auto;">                
+                                        <div class="location-search" id="location-search">
+                                            <input id="location-input" type="text" name="location" oninput="handleLocationTextChange(event)" />
+                                            <img src="../../assets/images/search icon.png" alt="search icon" />
+                                        </div>
+                                        <ul class="geolocations" id="locationResults">
+                                            <li>1st query</li>
+                                            <li>2nd query</li>
+                                            <li>3rd query</li>
+                                            <li>4th query</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="map"></div>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+                            <script>
+                                var distance;
+                                var map = L.map('map').setView([0, 0], 2); // Center map at (0, 0) with zoom level 2
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        attribution: '© OpenStreetMap contributors'
+                                    }).addTo(map);
+                    
+                                // Define custom icon properties
+                                var customIcon = L.icon({
+                                    iconUrl: './assets/images/Pickup location icon.png',
+                                    iconSize: [25, 50],
+                                    iconAnchor: [12, 50],
+                                    popupAnchor: [-3, -76]
+                                });
+                                
+                                var customDropLocationIcon = L.icon({
+                                    iconUrl: './assets/images/Destination location icon.png',
+                                    iconSize: [25, 50],
+                                    iconAnchor: [12, 50],
+                                    popupAnchor: [-3, -76]
+                                });
+                    
+                                // Add marker with custom icon
+                                var marker = L.marker(map.getCenter(), { icon: customIcon }).addTo(map);
+                                //var marker1 = L.marker(map.getCenter()).addTo(map); // Add marker at initial center
+                    
+                                const zoomToSelectedLocation = (latitude, longitude) => {
+                                    var selectedLocation = L.latLng(latitude, longitude); // Example selected locatio
+                                    map.setView(selectedLocation, 6); // 15 is the zoom level
+                                }
+                    
+                                // Function to change marker's icon during movement
+                                function changeIconOnMove() {
+                                    marker.setIcon(L.icon({
+                                        iconUrl: './assets/images/Map movement icon.png', // New icon URL
+                                        iconSize: [25, 50],
+                                        iconAnchor: [12, 50],
+                                        popupAnchor: [-3, -76]
+                                    }));
+                                }
+                    
+                                var routeLayer, routeLayers = [], control;
+                                // Function to change marker's icon when movement ends
+                                function changeIconOnMoveEnd() {
+
+                                    console.log("Map movement ended");
+
+                                    marker.setIcon(L.icon({
+                                        iconUrl: './assets/images/Pickup location icon.png', // Original icon URL
+                                        iconSize: [25, 50],
+                                        iconAnchor: [12, 50],
+                                        popupAnchor: [-3, -76]
+                                    }));
+                                    let mapCenter = map.getCenter();
+                                    let location = {
+                                        latitude:mapCenter.lat,
+                                        longitude:mapCenter.lng
+                                    };
+                    
+                                    if(selectingPickupLocation){
+                                        /**
+                                         * Add a pickup location marker;
+                                         *  */
+                                        pickupLocation = location;
+                                        removeMarkerFromMap(pickupLocationMarker);
+                                        addPickupLocationMarker(mapCenter.lat, mapCenter.lng);
+                                        marker.bindPopup(`<button onclick='selectLocationOnMoveEnd(${mapCenter.lat}, ${mapCenter.lng})'>Done</button>`).openPopup();
+                                        //zoomToSelectedLocation(mapCenter.lat, mapCenter.lng);
+                                    } else if(selectingDropLocation){
+                                        /**
+                                         * Add drop location marker;
+                                        */
+                                        dropLocation = location;
+                                        removeMarkerFromMap(dropLocationMarker);
+                                        addDropLocationMarker(mapCenter.lat, mapCenter.lng);
+                                        marker.bindPopup(`<button onclick='selectLocationOnMoveEnd(${mapCenter.lat}, ${mapCenter.lng})'>Done</button>`).openPopup();
+                                        //zoomToSelectedLocation(mapCenter.lat, mapCenter.lng);
+                                    }
+                                }
+
+                                const selectLocationOnMoveEnd = (latitude, longitude) => {
+                                    let location = {
+                                        latitude:latitude,
+                                        longitude:longitude
+                                    }
+                    
+                                    if(selectingPickupLocation){
+                                        pickupLocation = location;
+                                        removeMarkerFromMap(pickupLocationMarker);
+                                        addPickupLocationMarker(latitude, longitude);
+                                        map.setView([latitude, longitude], 19); //Zoom in to the location
+                                        cancelTextSearch();
+
+                                        if(dropLocation != undefined){
+                                            /**
+                                             * If drop location is defined, generate the route;
+                                             * */
+                                            generateRoute(pickupLocation, dropLocation);
+                                        }
+                                        cancelPickupLocation();
+                                        marker.closePopup();
+                                    } else if( selectingDropLocation){
+                                        dropLocation = location;
+                                        removeMarkerFromMap(dropLocationMarker);
+                                        addDropLocationMarker(latitude, longitude);
+                                        map.setView([latitude, longitude], 19); //Zoom in to the location
+                                        cancelTextSearch();
+
+                                        if(pickupLocation != undefined){
+                                            /*
+                                            * If pickup location is defined, generate the route;
+                                            */
+                                           generateRoute(pickupLocation, dropLocation);
+                                        }
+                                        cancelDropLocation();
+                                        marker.closePopup();
+                                    }
+                                }
+                    
+                                //Function to remove marker from the map
+                                const removeMarkerFromMap = marker => {
+                                    if(marker){
+                                        map.removeLayer(marker);
+                                        marker = undefined;
+                                    }
+                                }
+                    
+                                //Function to add marker to the map
+                                function addMarker() {
+                                    if (!marker) {
+                                        marker = L.marker([51.5, -0.09]).addTo(map);
+                                    } else {
+                                        alert("Marker already added!");
+                                    }
+                                }
+                                
+                                // Add popup to the marker
+                                // marker.bindPopup("<button onclick='selectLocation()'>Done</button>").openPopup();
+                    
+                                // Function to update marker position when map is scrolled
+                                function updateMarkerPosition() {
+                                    marker.setLatLng(map.getCenter());
+                                }
+                    
+                                // Function to handle click event on the map
+                                function onMapClick(e) {
+                                    var latitude = e.latlng.lat.toFixed(6);
+                                    var longitude = e.latlng.lng.toFixed(6);
+                                    alert("Latitude: " + latitude + "\nLongitude: " + longitude);
+                                }
+                    
+                                // Update marker position when map is moved
+                                map.on('move', updateMarkerPosition);
+                    
+                                // Change marker's icon during movement
+                                map.on('move', changeIconOnMove);
+                    
+                                // Change marker's icon when movement ends
+                                map.on('moveend', changeIconOnMoveEnd);
+                    
+                                // Center marker initially
+                                updateMarkerPosition();
+                    
+                                // Attach click event listener to the map
+                                //map.on('click', onMapClick);
+                    
+                                var pickupLocationMarker;
+                                var dropLocationMarker;
+                    
+                                const addPickupLocationMarker = (latitude, longitude) => {
+                                    pickupLocationMarker = L.marker([latitude, longitude], { icon:customIcon}).addTo(map);
+                                    /**
+                                     * Zoom in to the location
+                                    */
+                                }
+                    
+                                const addDropLocationMarker = (latitude, longitude) => {
+                                    dropLocationMarker = L.marker([latitude, longitude], { icon:customDropLocationIcon}).addTo(map);
+                                }
+                    
+                                const selectPlace = (latitude, longitude) => {
+                                    //document.getElementById('result').innerHTML = 'Latitude: ' + latitude + '<br>Longitude: ' + longitude;
+                                    /**
+                                     * Store the informatin in the correct locations;
+                                     */
+
+                                    console.log("Location selected");
+                                    let location = {
+                                        latitude:latitude,
+                                        longitude:longitude
+                                    }
+                    
+                                    if(selectingPickupLocation){
+                                        pickupLocation = location;
+                                        removeMarkerFromMap(pickupLocationMarker);
+                                        addPickupLocationMarker(latitude, longitude);
+                                        map.setView([latitude, longitude], 19); //Zoom in to the location
+                                        cancelTextSearch();
+
+                                        if(dropLocation != undefined){
+                                            /**
+                                             * If drop location is defined, generate the route;
+                                             * */
+                                            generateRoute(pickupLocation, dropLocation);
+                                        }
+                                        cancelPickupLocation();
+                                        marker.closePopup();
+                                    } else if( selectingDropLocation){
+                                        dropLocation = location;
+                                        removeMarkerFromMap(dropLocationMarker);
+                                        addDropLocationMarker(latitude, longitude);
+                                        map.setView([latitude, longitude], 19); //Zoom in to the location
+                                        cancelTextSearch();
+
+                                        if(pickupLocation != undefined){
+                                            /*
+                                            * If pickup location is defined, generate the route;
+                                            */
+                                           generateRoute(pickupLocation, dropLocation);
+                                        }
+                                        cancelDropLocation();
+                                        marker.closePopup();
+                                    }
+                                }
+
+                                const generateRoute = (pickupLocation, dropLocation) => {
+
+                                    console.log("Generating route");
+                                    var startPoint = L.latLng(pickupLocation.latitude, pickupLocation.longitude); // Example start point
+                                    var endPoint = L.latLng(dropLocation.latitude, dropLocation.longitude);   // Example end point
+                
+                                    if(control) control.setWaypoints([]);
+                
+                                    control = L.Routing.control({
+                                        waypoints: [
+                                            startPoint,
+                                            endPoint
+                                        ],
+                                        routeWhileDragging: true,
+                                        lineOptions: {
+                                            styles: [{color: 'blue', opacity: 0.7, weight: 5}],
+                                            show: false // Disable directions popup
+                                        },
+                                        createMarker: function() { return null; }, // Disable markers
+                                        addWaypoints: false // Disable adding waypoints
+                                    }).addTo(map);
+                
+                                    control.on('routesfound', function (e) {
+
+                                        /**
+                                         * Zoom in to the route;
+                                         */
+                                        boundMap(pickupLocation, dropLocation);
+                                        var routes = e.routes;
+                                        //console.log(e.routes);
+                                        //routeLayer = routes[0].route; // Store the route layer
+                                        //routeLayers.push(routeLayer);
+                                        distance = routes[0].summary.totalDistance; // Distance in meters
+                                        logisticsEstimate(distance, selectedVehicle.rate_per_km);
+                                    });
+                                }
+                    
+                                const boundMap = (pickupLocation, dropLocation) => {
+                                    let location1 = [pickupLocation.latitude, pickupLocation.longitude];
+                                    let location2 = [dropLocation.latitude, dropLocation.longitude];
+
+                                    var bounds = [location1, location2];
+
+                                    map.fitBounds(bounds,{
+                                        padding: [3, 3],
+                                        animate: true,
+                                        pan: true,
+                                        //maxZoom: 5
+                                    });
+                                }
+                    
+                                function clearRoutes() {
+                                    routeLayers.forEach(function (layer) {
+                                        map.removeLayer(layer); // Remove each route layer from the map
+                                    });
+                                    routeLayers = []; // Clear the array
+                                }
+                            </script>
+                        </div>
+                        <div class="navigation-buttons">
+                            <button class="prev-button" onclick="slideTo(0)">PREV</button>
+                            <button class="next-button" onclick="slideTo(2)">NEXT</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div>
+                        <div class="results">
+                            <table>
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Distance</th><td id="distance">100 m</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Rate</th><td id="vehicle-rate"> Ksh. 100/m</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount</th><td id="estimated-cost">Ksh. 10,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="navigation-buttons">
+                            <button class="next-prev" onclick="slideTo(1)">PREV</button>
+                            <!-- <button>NEXT</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- If we need pagination -->
+            <!-- <div class="swiper-pagination"></div> -->
+          
+            <!-- If we need navigation buttons -->
+            <!-- <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div> -->
+          
+            <!-- If we need scrollbar -->
+            <!-- <div class="swiper-scrollbar"></div> -->
+        </div>
+        <script>
+            const selectVehicle = index => {
+                let vehicles = document.getElementsByClassName("vehicle"), i;
+
+                //console.log("************   " + index);
+                for(i=0; i<vehicles.length; i++){
+                    if(i == index){
+                        console.log(vehicles[i]);
+                        vehicles[i].classList.remove('selected');
+                        /*if (vehicles[i].classList.contains('selected')) {
+                            // Remove the class name "selected"
+                            vehicles[i].classList.remove('selected');
+                        }*/
+                        //vehicles[i].style.border = "4px solid transparent";
+                    } else {
+                        vehicles[i].classList.add('selected');
+                        //vehicles[i].style.border = "4px solid gold";
+                    }
+                }
+            }
+        </script>
+        <script src="./scripts/navigation.js"></script>
+        
+        
+
+        
+        
+        
+
+        <script>
+            /**
+             * To calculate the transport cost;
+             * 1. Type of good; Compact or non-compact;
+             * 2. non-compact - Just provide the weight; - Check on the transportation table and
+             *  Know the charge for the weight range;
+             * 3. Compact - Get the volume and the weight;
+             *  Check on the table and know the charge for the weight & volume combination;
+             * 
+             * */
+
+        </script>
+
+        <script src="./scripts/edit-package.js"></script>
+        <script src="./scripts/transport-vehicles.js"></script>
+        <section class="popup">
+            <div>
+                <div class="popup-close">
+                    <span onclick="editPackage()" title="Close">&times;</span>
+                </div>
+            </div>
+            <div>
+                <form class="package-form" onsubmit="handlePackageUpload(event)">
+                    <h2>Add Package</h2>
+                    <div class="underline"></div>
+                    <div class="package-fields">
+                        <label>Description<span class="danger">*</span></label>
+                        <div>
+                            <input id="description-input" onchange="handleDescriptionChange(event)" type="text" name="package-description" class="input" />
+                            <span id="description-error" class="danger text-danger error"></span>
+                        </div>
+                        <label>Package Length (m)<span class="danger">*</span></label>
+                        <div>
+                            <input type="number" id="package-length-input" onchange="handleLengthChange(event)" name="package-length" class="input" />
+                            <span id="length-error" class="danger text-danger error"></span>
+                        </div>
+                        <label>Package Width (m)<span class="danger">*</span></label>
+                        <div>
+                            <input type="number" id="package-width-input" onchange="handleWidthChange(event)" name="package-width" class="input" />
+                            <span id="width-error" class="danger text-danger error"></span>
+                        </div>
+                        <label>Package Height (m)<span class="danger">*</span></label>
+                        <div>
+                            <input type="number" id="package-height-input" onchange="handleHeightChange(event)" name="package-height" class="input" />
+                            <span id="height-error" class="danger text-danger error"></span>
+                        </div>
+                        <label>Package Weight (kg)<span class="danger">*</span></label>
+                        <div>
+                            <input type="number" id="package-weight-input" onchange="handleWeightChange(event)" name="package-weight" class="input" />
+                            <span id="weight-error" class="danger text-danger error"></span>
+                        </div>
+                        <label>Units<span class="danger">*</span></label>
+                        <div>
+                            <input type="number" id="package-units-input" onchange="handleUnitsChange(event)" name="units" class="input" />
+                            <span id="units-error" class="danger text-danger error"></span>
+                        </div>
+                        <input type="SUBMIT" class="bg-success text-white package-submit-button" />
+                    </div>
+                </form>
+            </div>
+        </section>
+        <script src = "./scripts/swiper/swiper-bundle.min.js"></script>
+        <script src = "./scripts/swiper/initialize-swiper.js"></script>
+    </body>
+</html>

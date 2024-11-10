@@ -1,0 +1,169 @@
+.vehicles, .vehicle-details{
+    display: grid;
+    display: -ms-grid;
+    display: -moz-grid;
+}
+
+.select-vehicle-buttons{
+    width: max-content;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    position:relative;
+    z-index:1;
+    top:1px;
+}
+
+.select-vehicle-buttons button{
+    padding:1rem 2rem;
+    border: none;
+    background-color: white;
+    border-bottom: none;
+    border-radius: 10px;
+    transition: box-shadow 1s;
+}
+
+.select-vehicle-buttons button:hover{
+    cursor: pointer;
+}
+
+.select-vehicle-buttons .active{
+    box-shadow: 1px 1px 3px rgb(120, 120, 120);
+}
+
+.packages{
+    /* border:1px solid rgb(210, 210, 210); */
+    margin: auto;
+    border-collapse: collapse;
+    box-shadow: 1px 1px 3px rgb(120, 120, 120);
+    border-radius: 10px;
+    padding: 1rem;
+    width: max-content;
+}
+
+.packages tbody{
+    padding: 1rem;
+}
+
+.packages tbody th, .packages tbody td{
+    padding:0.5rem 1rem;
+}
+
+.packages button{
+    padding:0.6rem 1rem;
+    background-color: white;
+    border: none;
+    border:1px solid transparent;
+    border-radius: 10px;
+}
+
+.add-package-button{
+    padding: 1rem 2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin: 2rem auto;
+    display: block;
+}
+
+.delete-button:hover{
+    background-color:#dc3545;
+    color: white;
+}
+.add-package-button:hover{
+    cursor: pointer;
+    background-color: #006de2;
+}
+
+.packages button:hover{
+    cursor: pointer;
+    /* border: 1px solid rgb(210, 210, 210); */
+    box-shadow: 1px 1px 3px rgb(210, 210, 210);
+}
+
+.vehicle-details{
+    grid-template-columns: repeat(2, max-content);
+    width: max-content;
+    margin: auto;
+}
+
+.vehicle-details span{
+    padding: 0.5rem 1.5rem;
+}
+
+
+.swiper3{
+    /* width:500px; */
+    height:400px;
+    overflow: hidden;
+}
+
+.vehicles{
+    height:400px;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+
+}
+
+.swiper4{
+    width:400px;
+    height: auto;
+    overflow: hidden;
+}
+
+.select-vehicle{
+    overflow: hidden;
+}
+
+.vehicle-image{
+    position: relative;
+}
+
+
+.vehicle-image .navigate-left, .vehicle-image .navigate-right, .vehicle-image .navigate-top, .vehicle-image .navigate-bottom{
+    border: 1px solid black;
+    background-color: rgba(255, 255, 255, 0.5);
+    height: 40px;
+    width: 40px;
+    border-radius:50%;
+    margin:0.5rem;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    transition: background-color 1s;
+    position: absolute;
+}
+
+.vehicle-image .navigate-left > div, .vehicle-image .navigate-right > div, .vehicle-image .navigate-top > div, .vehicle-image .navigate-bottom > div{
+    border:1px solid black;
+    height:25px;
+    width:25px;
+    border-radius: 50%;
+}
+
+.vehicle-image .navigate-left:hover, .vehicle-image .navigate-right:hover, .vehicle-image .navigate-top:hover, .vehicle-image .navigate-bottom:hover{
+    cursor: pointer;
+    border:1px solid #006de2;
+    background-color: white;
+}
+
+.vehicle-image .navigate-right{
+    right:0%;
+    top:40%;
+}
+
+.vehicle-image .navigate-left{
+    left:0%;
+    top:40%;
+}
+
+.vehicle-image .navigate-top{
+    left:40%;
+    top:0%;
+}
+
+.vehicle-image .navigate-bottom{
+    left:40%;
+    bottom:0%;
+}

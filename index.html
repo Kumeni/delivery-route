@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            #map {
+                display: block;
+                height: 100vh;
+                width: 100vw;
+                margin: auto;
+            }
+        </style>
+
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+        <link rel="stylesheet" href="../styles/select-location.css" />
+        <link rel="stylesheet" href="../styles/select-vehicle.css" />
+        <link rel="stylesheet" href="./styles/navigation.css" />
+        <link rel="stylesheet" href="./styles/progress.css" />
+        <link rel="stylesheet" href="./styles/package-form.css" />
+        <link rel="stylesheet" href="./styles/select-vehicle.css" />
+        <link rel="stylesheet" href="./styles/popup.css" />
+        <link rel="stylesheet" href="./styles/results.css" />
+        <link rel="stylesheet" href="../scripts/swiper/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+        <title>Delivery Route | Yosam Branding</title>
+    </head>
+    <body>
+        
+        <script src="./scripts/logistics.js"></script>
+
+        <style>
+            .leaflet-routing-alt{
+                display: none !important;
+            }
+        </style>
+        <div id="map"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+        <script>
+            var distance;
+            var map = L.map('map').setView([0, 0], 2); // Center map at (0, 0) with zoom level 2
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+            // Define custom icon properties
+            var customIcon = L.icon({
+                iconUrl: './assets/images/Pickup location icon.png',
+                iconSize: [25, 50],
+                iconAnchor: [12, 50],
+                popupAnchor: [-3, -76]
+            });
+            
+            var customDropLocationIcon = L.icon({
+                iconUrl: './assets/images/Destination location icon.png',
+                iconSize: [25, 50],
+                iconAnchor: [12, 50],
+                popupAnchor: [-3, -76]
+            });
+
+            // Add marker with custom icon
+            var marker = L.marker(map.getCenter(), { icon: customIcon }).addTo(map);
+            //var marker1 = L.marker(map.getCenter()).addTo(map); // Add marker at initial center
+
+            const zoomToSelectedLocation = (latitude, longitude) => {
+                var selectedLocation = L.latLng(latitude, longitude); // Example selected locatio
+                map.setView(selectedLocation, 6); // 15 is the zoom level
+            }
+
+            // Function to change marker's icon during movement
+            /*function changeIconOnMove() {
+                marker.setIcon(L.icon({
+                    iconUrl: './assets/images/Map movement icon.png', // New icon URL
+                    iconSize: [25, 50],
+                    iconAnchor: [12, 50],
+                    popupAnchor: [-3, -76]
+                }));
+            }*/
+
+            var routeLayer, routeLayers = [], control;
+            // Function to change marker's icon when movement ends
+            /*function changeIconOnMoveEnd() {
+
+                console.log("Map movement ended");
+
+                marker.setIcon(L.icon({
+                    iconUrl: './assets/images/Pickup location icon.png', // Original icon URL
+                    iconSize: [25, 50],
+                    iconAnchor: [12, 50],
+                    popupAnchor: [-3, -76]
+                }));
+                let mapCenter = map.getCenter();
+                let location = {
+                    latitude:mapCenter.lat,
+                    longitude:mapCenter.lng
+                };
+
+                if(selectingPickupLocation){
+                    //Add a pickup location marker;
+                
+                    pickupLocation = location;
+                    removeMarkerFromMap(pickupLocationMarker);
+                    addPickupLocationMarker(mapCenter.lat, mapCenter.lng);
+                    marker.bindPopup(`<button onclick='selectLocationOnMoveEnd(${mapCenter.lat}, ${mapCenter.lng})'>Done</button>`).openPopup();
+                    //zoomToSelectedLocation(mapCenter.lat, mapCenter.lng);
+                } else if(selectingDropLocation){
+                    //Add drop location marker;
+                    dropLocation = location;
+                    removeMarkerFromMap(dropLocationMarker);
+                    addDropLocationMarker(mapCenter.lat, mapCenter.lng);
+                    marker.bindPopup(`<button onclick='selectLocationOnMoveEnd(${mapCenter.lat}, ${mapCenter.lng})'>Done</button>`).openPopup();
+                    //zoomToSelectedLocation(mapCenter.lat, mapCenter.lng);
+                }
+            }*/
+
+            /*const selectLocationOnMoveEnd = (latitude, longitude) => {
+                let location = {
+                    latitude:latitude,
+                    longitude:longitude
+                }
+
+                if(selectingPickupLocation){
+                    pickupLocation = location;
+                    removeMarkerFromMap(pickupLocationMarker);
+                    addPickupLocationMarker(latitude, longitude);
+                    map.setView([latitude, longitude], 19); //Zoom in to the location
+                    cancelTextSearch();
+
+                    if(dropLocation != undefined){
+                        
+                        //If drop location is defined, generate the route;
+                        generateRoute(pickupLocation, dropLocation);
+                    }
+                    cancelPickupLocation();
+                    marker.closePopup();
+                } else if( selectingDropLocation){
+                    dropLocation = location;
+                    removeMarkerFromMap(dropLocationMarker);
+                    addDropLocationMarker(latitude, longitude);
+                    map.setView([latitude, longitude], 19); //Zoom in to the location
+                    cancelTextSearch();
+
+                    if(pickupLocation != undefined){
+                        //If pickup location is defined, generate the route;
+                        generateRoute(pickupLocation, dropLocation);
+                    }
+                    cancelDropLocation();
+                    marker.closePopup();
+                }
+            }*/
+
+            //Function to remove marker from the map
+            const removeMarkerFromMap = marker => {
+                if(marker){
+                    map.removeLayer(marker);
+                    marker = undefined;
+                }
+            }
+
+            //Function to add marker to the map
+            function addMarker() {
+                if (!marker) {
+                    marker = L.marker([51.5, -0.09]).addTo(map);
+                } else {
+                    alert("Marker already added!");
+                }
+            }
+            
+            // Add popup to the marker
+            // marker.bindPopup("<button onclick='selectLocation()'>Done</button>").openPopup();
+
+            // Function to update marker position when map is scrolled
+            function updateMarkerPosition() {
+                marker.setLatLng(map.getCenter());
+            }
+
+            // Function to handle click event on the map
+            function onMapClick(e) {
+                var latitude = e.latlng.lat.toFixed(6);
+                var longitude = e.latlng.lng.toFixed(6);
+                alert("Latitude: " + latitude + "\nLongitude: " + longitude);
+            }
+
+            // Update marker position when map is moved
+            //map.on('move', updateMarkerPosition);
+
+            // Change marker's icon during movement
+            //map.on('move', changeIconOnMove);
+
+            // Change marker's icon when movement ends
+            //map.on('moveend', changeIconOnMoveEnd);
+
+            // Center marker initially
+            updateMarkerPosition();
+
+            // Attach click event listener to the map
+            //map.on('click', onMapClick);
+
+            var pickupLocationMarker;
+            var dropLocationMarker;
+
+            const addPickupLocationMarker = (latitude, longitude) => {
+                pickupLocationMarker = L.marker([latitude, longitude], { icon:customIcon}).addTo(map);
+                /**
+                    * Zoom in to the location
+                */
+            }
+
+            const addDropLocationMarker = (latitude, longitude) => {
+                dropLocationMarker = L.marker([latitude, longitude], { icon:customDropLocationIcon}).addTo(map);
+            }
+
+            const selectPlace = (latitude, longitude) => {
+                //document.getElementById('result').innerHTML = 'Latitude: ' + latitude + '<br>Longitude: ' + longitude;
+                /**
+                    * Store the informatin in the correct locations;
+                    */
+
+                console.log("Location selected");
+                let location = {
+                    latitude:latitude,
+                    longitude:longitude
+                }
+
+                if(selectingPickupLocation){
+                    pickupLocation = location;
+                    removeMarkerFromMap(pickupLocationMarker);
+                    addPickupLocationMarker(latitude, longitude);
+                    map.setView([latitude, longitude], 19); //Zoom in to the location
+                    cancelTextSearch();
+
+                    if(dropLocation != undefined){
+                        /**
+                            * If drop location is defined, generate the route;
+                            * */
+                        generateRoute(pickupLocation, dropLocation);
+                    }
+                    cancelPickupLocation();
+                    marker.closePopup();
+                } else if( selectingDropLocation){
+                    dropLocation = location;
+                    removeMarkerFromMap(dropLocationMarker);
+                    addDropLocationMarker(latitude, longitude);
+                    map.setView([latitude, longitude], 19); //Zoom in to the location
+                    cancelTextSearch();
+
+                    if(pickupLocation != undefined){
+                        /*
+                        * If pickup location is defined, generate the route;
+                        */
+                        generateRoute(pickupLocation, dropLocation);
+                    }
+                    cancelDropLocation();
+                    marker.closePopup();
+                }
+            }
+
+            // Define your locations as an array of objects with latitude and longitude
+            const locations = [
+                { lat: 40.748817, lng: -73.985428 }, // Example: New York
+                { lat: 40.80817, lng: -73.995428 },   // Example: Paris
+                { lat: 40.80917, lng: -73.996428 }   // Example: London
+                // Add more locations as needed
+            ];
+
+            let locationMarkers = [];
+            const generateRoute = (locations) => {
+
+                let waypoints = [];
+                locations.forEach((location, index) => {
+                    waypoints.push(L.latLng(location.lat, location.lng));
+                });
+
+                console.log(waypoints);
+                /*var startPoint = L.latLng(pickupLocation.latitude, pickupLocation.longitude); // Example start point
+                var endPoint = L.latLng(dropLocation.latitude, dropLocation.longitude);   // Example end point*/
+                if(control) control.setWaypoints([]);
+
+                control = L.Routing.control({
+                    waypoints: waypoints,
+                    routeWhileDragging: true,
+                    lineOptions: {
+                        styles: [{color: 'blue', opacity: 0.7, weight: 5}],
+                        show: false // Disable directions popup
+                    },
+                    createMarker: function() { return null; }, // Disable markers
+                    addWaypoints: false, // Disable adding waypoints
+                    show: false, // Disable adding waypoints
+                    draggableWaypoints: false, // Disable adding waypoints
+
+                    // Custom formatter to suppress instructions
+                    formatter: new L.Routing.Formatter({
+                        language: 'en',
+                        units: 'metric',
+                        formatInstruction: function() { return ''; } // Return an empty string for instructions
+                    })
+                }).addTo(map);
+
+                control.on('routesfound', function (e) {
+                    /**
+                        * Zoom in to the route;
+                        */
+                    boundMap(waypoints[0], waypoints[waypoints.length-1]);
+                    var routes = e.routes;
+                    console.log(e.routes);
+                    //routeLayer = routes[0].route; // Store the route layer
+                    //routeLayers.push(routeLayer);
+                    distance = routes[0].summary.totalDistance; // Distance in meters
+                    //logisticsEstimate(distance, selectedVehicle.rate_per_km);
+                });
+
+                /*
+                    For each location add marker and bind popup
+                */
+                let i = 0;
+                
+                for(i = 0; i < locations.length; i++){
+                    locationMarkers[i] = L.marker([locations[i].lat, locations[i].lng], { icon:customIcon}).addTo(map);
+                    locationMarkers[i].bindPopup("<p>Stephen Oduor</p><a href='tel:+254717551542'>+254717551542</a>").openPopup();
+                }
+            }
+            generateRoute(locations);
+            // const generateRoute = (pickupLocation, dropLocation) => {
+
+            //     console.log("Generating route");
+            //     var startPoint = L.latLng(pickupLocation.latitude, pickupLocation.longitude); // Example start point
+            //     var endPoint = L.latLng(dropLocation.latitude, dropLocation.longitude);   // Example end point
+
+            //     if(control) control.setWaypoints([]);
+
+            //     control = L.Routing.control({
+            //         waypoints: [
+            //             startPoint,
+            //             endPoint
+            //         ],
+            //         routeWhileDragging: true,
+            //         lineOptions: {
+            //             styles: [{color: 'blue', opacity: 0.7, weight: 5}],
+            //             show: false // Disable directions popup
+            //         },
+            //         createMarker: function() { return null; }, // Disable markers
+            //         addWaypoints: false // Disable adding waypoints
+            //     }).addTo(map);
+
+            //     control.on('routesfound', function (e) {
+            //         boundMap(pickupLocation, dropLocation);
+            //         var routes = e.routes;
+            //         //console.log(e.routes);
+            //         //routeLayer = routes[0].route; // Store the route layer
+            //         //routeLayers.push(routeLayer);
+            //         distance = routes[0].summary.totalDistance; // Distance in meters
+            //         logisticsEstimate(distance, selectedVehicle.rate_per_km);
+            //     });
+            // }
+
+            const boundMap = (start, end) => {
+                
+                let location1 = [start.lat, start.lng];
+                let location2 = [end.lat, end.lng];
+
+                var bounds = [location1, location2];
+
+                map.fitBounds(bounds,{
+                    padding: [3, 3],
+                    animate: true,
+                    pan: true,
+                    //maxZoom: 5
+                });
+            }
+
+            function clearRoutes() {
+                routeLayers.forEach(function (layer) {
+                    map.removeLayer(layer); // Remove each route layer from the map
+                });
+                routeLayers = []; // Clear the array
+            }
+        </script>
+        
+    </body>
+</html>

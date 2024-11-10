@@ -1,0 +1,74 @@
+.package-fields{
+    display: grid;
+    display: -ms-grid;
+    display: -moz-grid;
+}
+
+.package-fields{
+    grid-template-columns: max-content auto;
+    column-gap: 2rem;
+    row-gap:1rem;
+}
+
+.package-fields label{
+    align-self: center;
+}
+
+.package-form{
+    margin:auto;
+    width: max-content;
+}
+
+.package-form h2{
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.package-form .underline{
+    background-color: gold;
+    width:100px;
+    height:2px;
+    margin: auto;
+    margin-bottom: 2rem;
+}
+
+.package-form input{
+    padding:1rem 1rem;
+    border:2px solid gold;
+}
+
+.package-form input:focus{
+    outline: none;
+}
+
+.package-form input[type="text"]{
+    width: 300px;
+}
+
+.package-form input[type="submit"]{
+    padding:1rem 3rem;
+    width: max-content;
+    border-radius:30px;
+    border:1px solid rgb(210, 210, 210);
+    box-shadow: 1px 1px 3px rgb(120, 120, 120);
+    background-color: #28a745;
+    color: white;
+    border: none;
+    grid-area:7/1/span 1/ span 2;
+    margin: auto;
+}
+
+.package-form input[type="submit"]:hover{
+    cursor: pointer;
+    background-color: #1e8035;
+}
+
+.error{
+    display: block;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.danger{
+    color: red;
+}

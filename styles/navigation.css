@@ -1,0 +1,51 @@
+.navigation-buttons{
+    display: grid;
+    display: -ms-grid;
+    display: -moz-grid;
+}
+
+.navigation-buttons{
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    padding: 0rem 4rem;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.navigation-buttons button{
+    padding: 1rem 2rem;
+    font-weight:500;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow:1px 1px 3px rgb(180, 180, 180);
+}
+
+.navigation-buttons button:hover{
+    cursor: pointer;
+}
+
+.navigation-buttons .next-button{
+    margin-right: auto;
+}
+
+.navigation-buttons .prev-button{
+    margin-left: auto;
+}
+
+.vehicle-image{
+    width: 400px;
+}
+
+.vehicle-image > img{
+    width:100%;
+    height: auto;
+}
+
+.swiper{
+    overflow: hidden;
+}
+
+.swiper > div > .swiper-slide{
+    background-color: white;
+}

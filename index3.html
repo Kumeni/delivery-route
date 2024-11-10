@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([0, 0], 2); // Start with a world view
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to generate the shortest route that passes through all given locations
+        async function generateShortestRoute(locations) {
+            // API key for OpenRouteService
+            const apiKey = 'YOUR_OPENSERVICE_API_KEY'; // Replace with your OpenRouteService API key
+
+            // Format locations into a coordinate array for OpenRouteService
+            const coordinates = locations.map(location => [location.lng, location.lat]);
+
+            // Make a request to OpenRouteService for TSP optimization
+            const response = await fetch(`https://api.openrouteservice.org/v2/matrix/driving-car`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    locations: coordinates,
+                    metrics: ["duration"], // Use "duration" or "distance"
+                    resolve_locations: "true",
+                    units: "km",
+                    sources: [0], // Start optimization from the first location
+                    destinations: Array.from({ length: locations.length }, (_, i) => i)
+                })
+            });
+
+            const matrixData = await response.json();
+
+            // Prepare waypoints in the optimized order returned from ORS
+            const optimizedOrder = tspSolve(matrixData.durations); // Solve TSP with the matrix data
+            const optimizedWaypoints = optimizedOrder.map(index => L.latLng(locations[index].lat, locations[index].lng));
+
+            // Clear existing markers and route
+            map.eachLayer(layer => {
+                if (layer instanceof L.Marker || layer instanceof L.Polyline) map.removeLayer(layer);
+            });
+
+            // Add markers for each location
+            optimizedWaypoints.forEach(waypoint => {
+                L.marker(waypoint).addTo(map);
+            });
+
+            // Generate the route using the optimized waypoints
+            L.Routing.control({
+                waypoints: optimizedWaypoints,
+                router: new L.Routing.OpenRouteService(apiKey),
+                lineOptions: {
+                    styles: [{ color: 'skyblue', opacity: 0.8, weight: 8 }] // Sky blue color, 8px thickness, 80% opacity
+                },
+                createMarker: function() { return null; } // Suppress default markers by the routing control
+            }).addTo(map).on('routesfound', function(e) {
+                // Fit map bounds to show the entire route
+                const bounds = e.routes[0].coordinates.map(coord => [coord.lat, coord.lng]);
+                map.fitBounds(bounds);
+            });
+        }
+
+        // Helper function to solve TSP based on the duration matrix
+        function tspSolve(durationMatrix) {
+            const n = durationMatrix.length;
+            const visited = Array(n).fill(false);
+            const route = [0]; // Start from the first location
+            visited[0] = true;
+
+            // Greedy approach to find the nearest unvisited location
+            for (let i = 1; i < n; i++) {
+                let last = route[route.length - 1];
+                let nearest = -1;
+                let shortest = Infinity;
+                for (let j = 0; j < n; j++) {
+                    if (!visited[j] && durationMatrix[last][j] < shortest) {
+                        shortest = durationMatrix[last][j];
+                        nearest = j;
+                    }
+                }
+                route.push(nearest);
+                visited[nearest] = true;
+            }
+
+            return route;
+        }
+
+        // Example usage with an array of locations
+        const locations = [
+            { lat: 40.748817, lng: -73.985428 }, // New York
+            { lat: 48.856613, lng: 2.352222 },   // Paris
+            { lat: 51.507351, lng: -0.127758 },  // London
+            { lat: 34.052235, lng: -118.243683 } // Los Angeles
+        ];
+
+        generateShortestRoute(locations);
+
+    </script>
+</body>
+</html>
