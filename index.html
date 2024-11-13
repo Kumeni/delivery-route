@@ -265,19 +265,97 @@
             }
 
             // Define your locations as an array of objects with latitude and longitude
-            const locations = [
+            /*const locations = [
                 { lat: 40.748817, lng: -73.985428 }, // Example: New York
                 { lat: 40.80817, lng: -73.995428 },   // Example: Paris
                 { lat: 40.80917, lng: -73.996428 }   // Example: London
                 // Add more locations as needed
-            ];
+            ];*/
+
+            const locations = [
+                { "name":"Rebecca Mghoi", "latitude":"-1.5157379", "longitude":"36.9465662", "phone":"+254704189138", "location":"St. Mary's Lang'ata"},
+                { "name":"Billy Labatt", "latitude":"-1.2840791", "longitude":"36.9001066", "phone":"+254725159157", "location":"Jacaranda Estate Donholm"},
+                { "name":"Belinda Mwangi", "latitude":"-1.2203155", "longitude":"36.740592", "phone":"+254703543468", "location":"Ekaya Gardens Gathiga"},
+                { "name":"Kevin Kemboi", "latitude":"-1.3300051", "longitude":"36.8636155", "phone":"+254711790179", "location":"Sameer Business Park"},
+                { "name":"Roger Mwaniki", "latitude":"-1.1947164", "longitude":"36.9463247", "phone":"+254790291762", "location":"Raha Max, Kahawa Sukari"},
+                { "name":"Ann Wamuyu Kamara", "latitude":"-1.1590188", "longitude":"36.9189009", "phone":"+254715006859", "location":"Serengeti Court Membley Ruiru hse 100"},
+                { "name":"Jane Wanjiru Mwangi", "latitude":"-1.1675464", "longitude":"36.96896", "phone":"+254791042412", "location":"Twins apartment nairobi, Kamakis"},
+                { "name":"Erick Mumo Mutua", "latitude":"-1.2079328", "longitude":"36.8954852", "phone":"+254722357132", "location":"Eagles Apartment, Zimmerman"},
+                { "name":"Jimmy Githinji Kereka", "latitude":"-1.185384", "longitude":"36.9029659", "phone":"+254790911882", "location":"Yellow cafeteria opposite Family bank, Kahawa west"},
+                { "name":"Cetrick Afundi", "latitude":"-1.3235455", "longitude":"36.8765284", "phone":"+254115685790", "location":"Nandi flame road, nairobi"},
+                { "name":"Grace mumo", "latitude":"-1.2678776", "longitude":"36.7230186", "phone":"+254713748708", "location":"Sabatia court, naivasha road"},
+                { "name":"Hildah Azangalala", "latitude":"-1.3079343", "longitude":"36.8119502", "phone":"+254718954325", "location":"Karuri Court, Madaraka"},
+                { "name":"Erick Wamalwa Barasa", "latitude":"-1.3217193", "longitude":"36.9009177", "phone":"+254707819550", "location":"Airport N Road, Nairobi"},
+                { "name":"Michael Tsuma", "latitude":"-1.2092227", "longitude":"36.7821499", "phone":"+254718365153", "location":"White house apartments Ruaka"},
+                { "name":"Tina Aruka", "latitude":"-1.1839394", "longitude":"36.8834779", "phone":"+254723040799", "location":"Opposite Friends Church Kahawa West"},
+                { "name":"Glein Tora", "latitude":"-1.2178849", "longitude":"36.8977021", "phone":"+254718537232", "location":"Equity bank Kasarani"},
+                { "name":"Nuh Chirewe Dzambo", "latitude":"-1.3300626", "longitude":"36.8624841", "phone":"+254717952533", "location":"Sameer Business Park"},
+                { "name":"Antony Ndambuki", "latitude":"-1.2766033", "longitude":"36.897521", "phone":"+254701751442", "location":"Nasra Garden Estate, Kayole spine road"},
+                { "name":"Calvin Imbigu", "latitude":"-1.229664", "longitude":"36.9203053", "phone":"+254725835760", "location":"Total, Sunton, Kasarani"},
+                { "name":"Mark Muthama Kilungya", "latitude":"-1.2888955", "longitude":"36.9478818", "phone":"+254715702437", "location":"Utawala shooters"},
+                { "name":"Elizabeth Nkirote Wanjiru", "latitude":"-1.1933275", "longitude":"36.9502354", "phone":"+254701221937", "location":"House no 025, taita taveta rd kahawa sukari"},
+                { "name":"James Kithendu Katiwa", "latitude":"-1.0598627", "longitude":"37.0923113", "phone":"+254795802180", "location":"Makongeni, Thika"},
+                { "name":"Lawrence Owino", "latitude":"-1.1984742", "longitude":"36.920967", "phone":"+254714562519", "location":"Kahawa wendani opposite linca apartment next to denver court"},
+                { "name":"Basil Omolo", "latitude":"-1.3300626", "longitude":"36.8624841", "phone":"+254702608321", "location":"Sameer Business Park"},
+                { "name":"Daniel Kuria", "latitude":"-1.2833624", "longitude":"36.8172196", "phone":"", "location":"Windsor House"},
+                { "name":"Lewis Wachira Muriuki", "latitude":"-1.2101715", "longitude":"36.9051706", "phone":"+254729466985", "location":"Kona apartment, zimmerman"},
+                { "name":"Yvonne Kiragu", "latitude":"-1.21529", "longitude":"36.8996177", "phone":"+254721341142", "location":"Bethel plaza kasarani"},
+                { "name":"Sheila Nthiga", "latitude":"-1.1749135", "longitude":"36.8427945", "phone":"+254718432238", "location":"Victory apartments Kirigiti kiambu"},
+                { "name":"Joseph Nganga Njuguna", "latitude":"-1.2324779", "longitude":"36.876205", "phone":"+254708827181", "location":"Garden City Mall, roasters"},
+                { "name":"Peris Wambui Njoroge", "latitude":"-1.2919408", "longitude":"36.8216118", "phone":"+254702355678", "location":"Tiled Building behind Equity bank, Donholm, Caltex."},
+                { "name":"Morgan Kong'ola", "latitude":"-1.2049996", "longitude":"36.8986654", "phone":"+254714364436", "location":"Zimmerman SDA, Roysambu"},
+                { "name":"Moses Watakila Wawire", "latitude":"-1.2952737", "longitude":"36.7442237", "phone":"+254718930471", "location":"Dagoretti corner, mutindwa"},
+                { "name":"Seth Mboya", "latitude":"-1.3141947", "longitude":"36.890744", "phone":"+254719414109", "location":"Embakasi, kwa ndege, fedha"},
+                { "name":"Tony Korir", "latitude":"-1.194918", "longitude":"36.7378284", "phone":"+254734652413", "location":"JD Apartments, Kinoo"},
+                { "name":"Jane Wambui", "latitude":"-1.3800143", "longitude":"36.9384971", "phone":"+254741543180", "location":"Camden Court, Hse D3, Mlolongo"},
+                { "name":"Mark Kidula Agonya", "latitude":"-1.3187671", "longitude":"36.8334672", "phone":"+254713820512", "location":"Mirage Plaza, Mombasa Road"},
+                { "name":"Hannah Mwabili", "latitude":"-1.2403389", "longitude":"36.8993958", "phone":"+254720002073", "location":"Kevike Plaza Apartment, Lucky Summer Thika Road"},
+                { "name":"Timothy Kimani Njoroge", "latitude":"-1.2177544", "longitude":"36.8835205", "phone":"+254113578474", "location":"Jowanya Apartments House No. V5, TRM Drive"},
+                { "name":"Leah Atieno Ouma", "latitude":"-1.2068928", "longitude":"36.780237", "phone":"+254702954311", "location":"Townshed Apartment, Carlifonia Road"},
+                { "name":"Sharon Atieno Otieno", "latitude":"-1.301932", "longitude":"36.8105341", "phone":"+254725557144", "location":"KCB Towers , Upperhill, 12th floor, Kenya Road"},
+                { "name":"Emmeldah Millicent Amollh", "latitude":"-1.2784297", "longitude":"36.9545938", "phone":"+254723487709", "location":"Utawala kwa chief ( Innovation court )"},
+                { "name":"Phoebian Otieno Olalo", "latitude":"-1.1947963", "longitude":"36.9305343", "phone":"+254790304601", "location":"RAHA MAX APARTMENT, OFF BARINGO ROAD"},
+                { "name":"Odhiambo Kevin Juma", "latitude":"-1.1017801", "longitude":"37.0213465", "phone":"+254712830953", "location":"LK appartment, Juja"},
+                { "name":"John Mukaburu Muriithi", "latitude":"-1.1495293", "longitude":"36.960392", "phone":"+254717005933", "location":"Jiji towers Ruiru"},
+                { "name":"Alice Oketch", "latitude":"-1.2799172", "longitude":"36.6591246", "phone":"+254704910116", "location":"Cloisters park thogoto, Damacitest School Thogoto"},
+                { "name":"Caroline Muthoni Kimaru", "latitude":"-1.3047778", "longitude":"36.9010728", "phone":"+254725606001", "location":"Embakasi kwa ndege"},
+                { "name":"David Njoki", "latitude":"-1.1366381", "longitude":"36.9790507", "phone":"+254717504844", "location":"Kimbo-Matangi rd, Murera police post, Muturi's apt, Hse B2"},
+                { "name":"Sarah Achieng Nyawir", "latitude":"-1.2503847", "longitude":"36.9520115", "phone":"+254714268009", "location":"Midax petrol station, chokaa"},
+                { "name":"Joseph Muriithi Ndiragu", "latitude":"-1.2089519", "longitude":"36.7845146", "phone":"+254710785291", "location":"White House Apartments - House number G7 along Ruaka- Banana Road"},
+                { "name":"Josephine Muchiri", "latitude":"-1.2173129", "longitude":"36.8850518", "phone":"+254717034444", "location":"Amani Apartments, Roysambu"},
+                { "name":"Kelvin Kuria", "latitude":"-1.1598579", "longitude":"36.9508445", "phone":"+254768737382", "location":"Brokeshade Apartment, ruiru"},
+                { "name":"Donatus Waruiru Kamau", "latitude":"-1.1059368", "longitude":"36.9567948", "phone":"+254711822440", "location":"Mugutha, Ruiru"},
+                { "name":"Collins Kiptoo", "latitude":"-1.3525346", "longitude":"36.6616001", "phone":"+254704969868", "location":"Ngong town kibiko"},
+                { "name":"Brian Onyango", "latitude":"-1.2785391", "longitude":"37.1328986", "phone":"+254708373457", "location":"Twinfall city kangundo"},
+                { "name":"Hezbon Ocharo", "latitude":"-1.2175065", "longitude":"36.8853725", "phone":"+254725885312", "location":"Amani Apartment, Lumumba drive"},
+                { "name":"Vivian Mwendwa", "latitude":"-1.2059524", "longitude":"36.7747576", "phone":"+254702958107", "location":"Amani Apartment, Lumumba drive"},
+                { "name":"Ruth Wangari Gichina", "latitude":"-1.3245191", "longitude":"36.8782714", "phone":"+254723039658", "location":"Muimara Estate, Sideview Apartment"},
+                { "name":"Hartmut Kalume", "latitude":"-1.0332814", "longitude":"37.0752086", "phone":"+254702570516", "location":"Kiambu mama lucia plaza, upper road thika"},
+                { "name":"Isaac Mutunga Kitwaa", "latitude":"-1.2697992", "longitude":"36.8829574", "phone":"+254715133199", "location":"Ravine Apartment, Mutarakwa Road"},
+                { "name":"Brenda Okumu", "latitude":"-1.2842767", "longitude":"36.8897098", "phone":"+254713232717", "location":"Peacock Stage, Olombori Road Umoja 1"},
+                { "name":"Eliud Gachochu", "latitude":"-1.3019698", "longitude":"36.9011099", "phone":"+254725441831", "location":"Tassia"},
+                { "name":"Alvin Muchui", "latitude":"-1.0297411", "longitude":"37.0676672", "phone":"+254720943557", "location":"Section 2, thika"},
+                { "name":"Martin Muya", "latitude":"-1.0297411", "longitude":"37.0676672", "phone":"+254707820490", "location":"Section 2, thika"},
+                { "name":"Antony Omondi Odhiambo(Ann Adhiambo)", "latitude":"-1.0297411", "longitude":"37.0676672", "phone":"+254717137428", "location":"Nairobi"},
+                { "name":"Enock Chacha Mwita", "latitude":"-1.3923809", "longitude":"36.7693371", "phone":"+254703852583", "location":"Century Apartments"},
+                { "name":"Hamisi Shambi", "latitude":"-1.1859754", "longitude":"36.8986039", "phone":"+254729599659", "location":"Hope Classic, Kahawa west"},
+                { "name":"James Kitonga Maluki", "latitude":"-1.2370424", "longitude":"36.9337762", "phone":"+254720425001", "location":"ACK Road 4th Street, Kenrose House"},
+                { "name":"Martin Wachogi Mwangi", "latitude":"0.0080478", "longitude":"36.361626", "phone":"+254714756501", "location":"Sudav Apartments, Nyahururu-Gilgil Road Runda B Estate-Nyahururu"},
+                { "name":"Eunice Njeri Wanjiru", "latitude":"-1.2470326", "longitude":"36.6784581", "phone":"+254722916059", "location":"Regen Kikuyu"},
+                { "name":"Agnes Kithei Mutuku", "latitude":"-1.2063192", "longitude":"36.7746316", "phone":"+254714890551", "location":"The Stables Apartment Ruaka, House C4, 4th Floor"},
+                { "name":"Bob Omira Ojwang", "latitude":"-1.2791155", "longitude":"36.8878859", "phone":"+254714424839", "location":"Hornbill, Moi Drive, Umoja 1 Estate"},
+                { "name":"Fridah Kirare", "latitude":"-1.1850147", "longitude":"36.9055404", "phone":"+254723825770", "location":"Kamae rd kahawa west"},
+                { "name":"Ruth Okutoh", "latitude":"-1.2084882", "longitude":"36.7752508", "phone":"+254713730562", "location":"The Loftel, Rosslyn Slaughter Road"},
+                { "name":"Timothy Owenda", "latitude":"-1.2879701", "longitude":"36.882021", "phone":"+254714574897", "location":"Mumias South Road, Amasya Crescent, BuruBuru Phase 4"},
+                { "name":"Harrison Otieno", "latitude":"-1.2810825", "longitude":"36.8079823", "phone":"+254799820376", "location":"University of Nairobi"},
+            ]
 
             let locationMarkers = [];
             const generateRoute = (locations) => {
 
                 let waypoints = [];
                 locations.forEach((location, index) => {
-                    waypoints.push(L.latLng(location.lat, location.lng));
+                    waypoints.push(L.latLng(location.latitude, location.longitude));
                 });
 
                 console.log(waypoints);
@@ -289,7 +367,7 @@
                     waypoints: waypoints,
                     routeWhileDragging: true,
                     lineOptions: {
-                        styles: [{color: 'blue', opacity: 0.7, weight: 5}],
+                        styles: [{color: 'blue', opacity: 0, weight: 5}],
                         show: false // Disable directions popup
                     },
                     createMarker: function() { return null; }, // Disable markers
@@ -324,8 +402,8 @@
                 let i = 0;
                 
                 for(i = 0; i < locations.length; i++){
-                    locationMarkers[i] = L.marker([locations[i].lat, locations[i].lng], { icon:customIcon}).addTo(map);
-                    locationMarkers[i].bindPopup("<p>Stephen Oduor</p><a href='tel:+254717551542'>+254717551542</a>").openPopup();
+                    locationMarkers[i] = L.marker([locations[i].latitude, locations[i].longitude], { icon:customIcon}).addTo(map);
+                    locationMarkers[i].bindPopup(`<p>${locations[i].name}</p><p>${locations[i].location}</p><a href='tel:${locations[i].phone}'>${locations[i].phone}</a>`).openPopup();
                 }
             }
             generateRoute(locations);
