@@ -461,6 +461,49 @@
                 });
                 routeLayers = []; // Clear the array
             }
+
+            // Create a marker variable (will be initialized once we get the user's position)
+            let userMarker;
+
+            // Function to update the user's location every second
+            // Function to update the user's location every second with high accuracy
+            function trackUserLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.watchPosition(
+                        position => {
+                            const { latitude, longitude, accuracy } = position.coords;
+                            
+                            // Log accuracy to monitor if it's within acceptable limits
+                            console.log(`Location accuracy: ${accuracy} meters`);
+
+                            // If marker exists, update its position
+                            if (userMarker) {
+                                userMarker.setLatLng([latitude, longitude]);
+                            } else {
+                                // Create marker for the first time with accuracy circle
+                                userMarker = L.marker([latitude, longitude]).addTo(map);
+                                L.circle([latitude, longitude], { radius: accuracy }).addTo(map);
+                            }
+
+                            // Center map to user's location
+                            //map.setView([latitude, longitude], 15);
+                        },
+                        error => {
+                            console.error("Geolocation error:", error);
+                        },
+                        {
+                            enableHighAccuracy: true,   // Requests the most accurate location possible
+                            timeout: 10000,            // Maximum time (in ms) to wait for location
+                            maximumAge: 0              // Prevents using cached location data
+                        }
+                    );
+                } else {
+                    console.log("Geolocation is not supported by this browser.");
+                }
+            }
+
+            // Call the function to start tracking
+            trackUserLocation();
         </script>
         
     </body>
